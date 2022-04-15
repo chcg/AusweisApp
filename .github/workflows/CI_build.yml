@@ -2,6 +2,9 @@ name: CI_build
 
 "on": [push, pull_request]
 
+env:
+  BUILD_DIR_APP: "../_build"
+
 jobs:
 
   build_windows:
@@ -10,41 +13,46 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_configuration: [Release]
+        build_configuration: [Release, Debug]
         build_platform: ["Ninja"]
 
     steps:
 
-      - name: Install openssl dev
+      - name: Install openssl dev, ninja, wix
         run: |
-          choco install openssl --version=3.4.1
+          choco install openssl --version=3.5.4
           choco install ninja
+          dotnet tool install --global wix
 
       - name: Add nmake
         uses: ilammy/msvc-dev-cmd@v1
 
+      - name: checkout files with lineending LF to overcome issue with yamllint on windows
+        run: |
+          git config --global core.autocrlf false
+
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.8.*'
+          version: '6.9.*'
           modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats'
           setup-python: 'false'
 
       - name: generate cmake
         run: |
-          cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B _build
+          cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B "${{ env.BUILD_DIR_APP }}"
 
       - name: build cmake
         run: |
-          cmake --build _build --config ${{ matrix.build_configuration }} --target package
-          cmake --install _build
+          cmake --build "${{ env.BUILD_DIR_APP }}" --config ${{ matrix.build_configuration }} --target package
+          cmake --install "${{ env.BUILD_DIR_APP }}"
 
       - name: run ctest
         run: |
-          ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
+          ctest --test-dir "${{ env.BUILD_DIR_APP }}" --output-on-failure -C "${{ matrix.build_configuration }}"
 
   build_linux:
 
@@ -52,36 +60,85 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_configuration: [Release]
-        build_platform: ["Unix Makefiles"]
+        build_configuration: [Release, Debug]
+        build_platform: ["Ninja"]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install packages via apt
         run: |
           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev \
-                                                     libgl1-mesa-dev qt6-l10n-tools
+                                                     libgl1-mesa-dev qt6-l10n-tools ninja-build
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.8.1'
+          version: '6.9.*'
           modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
           setup-python: 'false'
 
       - name: generate cmake
         run: |
-          cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B _build
+          cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
-          cmake --build _build --config ${{ matrix.build_configuration }} --target package
-          sudo cmake --install _build
+          cmake --build ${{ env.BUILD_DIR_APP }} --config ${{ matrix.build_configuration }} --target package
+          sudo cmake --install ${{ env.BUILD_DIR_APP }}
 
       - name: run ctest
         run: |
-          ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
+          ctest --test-dir ${{ env.BUILD_DIR_APP }} --output-on-failure -C "${{ matrix.build_configuration }}"
+
+  # failing in cmake generation step: Could NOT find OpenGL (missing: OPENGL_INCLUDE_DIR)
+  build_linux_android_cmake:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release, Debug]
+        build_platform: ["Ninja"]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install packages via apt
+        run: |
+             sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev \
+                                    libgl1-mesa-dev libegl1-mesa-dev qt6-l10n-tools doxygen graphviz ninja-build
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.9.2'
+          modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
+          setup-python: 'false'
+
+      - name: Install Qt android
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.9.2'
+          host: 'linux'
+          target: 'android'
+          arch: 'android_x86_64'
+          modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
+          setup-python: 'false'
+
+      - name: generate cmake
+        run: |
+             cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
+                   -DQT_HOST_PATH=/home/runner/work/AusweisApp/Qt/6.9.2/gcc_64 -DCMAKE_ANDROID_ARCH_ABI=x86_64 \
+                   -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
+
+      - name: build cmake
+        run: |
+             cmake --build ${{ env.BUILD_DIR_APP }} --config ${{ matrix.build_configuration }}
+
+      - name: run ctest
+        run: |
+             ctest --test-dir ${{ env.BUILD_DIR_APP }} --output-on-failure -C "${{ matrix.build_configuration }}"
 
   build_macos:
 
@@ -89,16 +146,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_configuration: [Release]
-        build_platform: ["Unix Makefiles"]
+        build_configuration: [Release, Debug]
+        build_platform: ["Ninja"]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
+
+      - name: install ninja
+        run: |
+             brew install ninja
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.8.*'
+          version: '6.9.*'
           modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats'
 
       - name: generate cmake
@@ -107,12 +168,118 @@ jobs:
           export LDFLAGS=-L/usr/local/opt/openssl/lib
           export CPPFLAGS=-I/usr/local/opt/openssl/include
           export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
-          cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B _build
+          cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
-          cmake --build _build --config ${{ matrix.build_configuration }}
+          cmake --build ${{ env.BUILD_DIR_APP }} --config ${{ matrix.build_configuration }}
 
       - name: run ctest
         run: |
-          ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
+          ctest --test-dir ${{ env.BUILD_DIR_APP }} --output-on-failure -C "${{ matrix.build_configuration }}"
+
+  # failing in cmake generation step: Could NOT find OpenGL (missing: OPENGL_INCLUDE_DIR)
+  build_ios_cmake:
+
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release, Debug]
+        build_platform: ["Ninja"]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: install ninja
+        run: |
+             brew install ninja
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.9.*'
+          modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+          setup-python: 'false'
+
+      - name: Install Qt ios
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.9.*'
+          host: 'mac'
+          target: 'ios'
+          modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+          setup-python: 'false'
+
+      - name: generate cmake
+        run: |
+             export OPENSSL_ROOT=/usr/local/opt/openssl/bin
+             export LDFLAGS=-L/usr/local/opt/openssl/lib
+             export CPPFLAGS=-I/usr/local/opt/openssl/include
+             export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
+             cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
+                   -DQT_HOST_PATH=/Users/runner/work/AusweisApp/Qt/6.9.2/macos \
+                   -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
+
+      - name: build cmake
+        run: |
+             cmake --build ${{ env.BUILD_DIR_APP }} --config ${{ matrix.build_configuration }}
+
+      - name: run ctest
+        run: |
+             ctest --test-dir ${{ env.BUILD_DIR_APP }} --output-on-failure -C "${{ matrix.build_configuration }}"
+
+
+  build_macos_android:
+
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release, Debug]
+        build_platform: ["Ninja"]
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: install ninja
+        run: |
+             brew install ninja
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.9.*'
+          modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+          setup-python: 'false'
+
+      - name: Install Qt android
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.9.*'
+          host: 'mac'
+          target: 'android'
+          arch: 'android_arm64_v8a'
+          modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+          setup-python: 'false'
+
+
+      - name: generate cmake
+        run: |
+             export OPENSSL_ROOT=/usr/local/opt/openssl/bin
+             export LDFLAGS=-L/usr/local/opt/openssl/lib
+             export CPPFLAGS=-I/usr/local/opt/openssl/include
+             export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
+             cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
+                   -DCMAKE_TOOLCHAIN_FILE="..\cmake\android.toolchain.cmake" -B ${{ env.BUILD_DIR_APP }}
+
+      - name: build cmake
+        run: |
+             cmake --build ${{ env.BUILD_DIR_APP }} --config ${{ matrix.build_configuration }} --target package
+             cmake --install ${{ env.BUILD_DIR_APP }}
+
+      - name: run ctest
+        run: |
+             ctest --test-dir ${{ env.BUILD_DIR_APP }} --output-on-failure -C "${{ matrix.build_configuration }}"
