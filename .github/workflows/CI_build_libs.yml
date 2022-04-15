@@ -1,0 +1,137 @@
+name: CI_build_libs
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["NMake Makefiles"]
+
+    steps:
+
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Add nmake
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: generate cmake
+      run: |
+           mkdir c:\_build
+           cd c:\_build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" D:\a\AusweisApp\AusweisApp\libs
+
+    - name: build cmake
+      run: |
+           cd c:\_build
+           cmake --build . --config ${{ matrix.build_configuration }}
+
+  build_linux_cmake:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["Ninja"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install packages via apt
+      run: |
+           sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libdbus-1-dev libclang-13-dev ninja-build
+
+    - name: generate cmake
+      run: |
+           mkdir _build
+           cd _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" ../libs
+
+    - name: build cmake
+      run: |
+           cd _build
+           cmake --build . --config ${{ matrix.build_configuration }}
+
+  build_linux_android_cmake:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["Unix Makefiles"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install packages via apt
+      run: |
+           sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libdbus-1-dev libclang-13-dev ninja-build
+           sudo apt -y remove firefox microsoft-edge-stable google-chrome-stable kotlin libmono* mono-runtime
+
+    - name: generate cmake
+      run: |
+           mkdir _build
+           cd _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake ../libs
+
+    - name: build cmake
+      run: |
+           cd _build
+           cmake --build . --config ${{ matrix.build_configuration }}
+
+  build_macos_cmake:
+
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["Ninja"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: install ninja
+      run: |
+           brew install ninja
+
+    - name: generate cmake
+      run: |
+           mkdir _build
+           cd _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" ../libs
+
+    - name: build cmake
+      run: |
+           cd _build
+           cmake --build . --config ${{ matrix.build_configuration }}
+
+  build_ios_cmake:
+
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["Unix Makefiles"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: generate cmake
+      run: |
+           mkdir _build
+           cd _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake ../libs
+
+    - name: build cmake
+      run: |
+           cd _build
+           cmake --build . --config ${{ matrix.build_configuration }}

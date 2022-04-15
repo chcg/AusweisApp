@@ -1,0 +1,235 @@
+name: CI_build
+
+on: [push, pull_request]
+
+jobs:
+
+  # failing with D:\a\AusweisApp\AusweisApp\test\helper\common\MockReleaseInformation.cpp(42,35): error C2248: 'QString::QString': cannot access private member declared in class 'QString' [C:\_build\test\helper\common\AusweisAppTestHelperCommon.vcxproj]
+  #build_windows:
+
+
+    # runs-on: windows-latest
+    # strategy:
+      # fail-fast: false
+      # matrix:
+        # build_configuration: [Release]
+        # build_platform: [x64]
+
+    # steps:
+
+    # - name: Install openssl dev
+      # run: |
+           # choco install openssl
+           # dir "C:\Program Files"
+
+    # - name: Checkout repo
+      # uses: actions/checkout@v4
+
+    # - name: Add msbuild to PATH
+      # uses: microsoft/setup-msbuild@v1
+
+    # - name: Install Qt
+      # uses: jurplel/install-qt-action@v3
+      # with:
+        # version: '6.5.*'
+        # modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
+        # setup-python: 'false'
+
+    # - name: generate cmake
+      # run: |
+           # mkdir c:\_build
+           # cd c:\_build
+           # cmake -G "Visual Studio 17 2022" -A ${{ matrix.build_platform }} -T "v143" D:\a\AusweisApp\AusweisApp
+
+    # - name: build cmake
+      # run: |
+           # cd c:\_build
+           # cmake --build . --config ${{ matrix.build_configuration }} --target package
+
+    # - name: run ctest
+      # run: |
+           # cd c:\_build
+           # ctest --output-on-failure -C "${{ matrix.build_configuration }}"
+
+  # ubuntu 22.04 comes just with QT 6.2.4 and Qt >= 6.4 is required
+  build_linux_cmake:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["Unix Makefiles"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install packages via apt
+      run: |
+           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.5.*'
+        modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
+        setup-python: 'false'
+
+    - name: generate cmake
+      run: |
+           mkdir _build
+           cd _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" ..
+
+    - name: build cmake
+      run: |
+           cd _build
+           cmake --build . --config ${{ matrix.build_configuration }} --target package
+           sudo make install
+
+    - name: run ctest
+      run: |
+           cd _build
+           ctest --output-on-failure -C "${{ matrix.build_configuration }}"
+
+  # failing in cmake generation step: Could NOT find OpenGL (missing: OPENGL_INCLUDE_DIR)
+  # build_linux_android_cmake:
+
+    # runs-on: ubuntu-latest
+    # strategy:
+      # fail-fast: false
+      # matrix:
+        # build_configuration: [Release]
+        # build_platform: ["Unix Makefiles"]
+
+    # steps:
+    # - uses: actions/checkout@v4
+
+    # - name: Install packages via apt
+      # run: |
+           # sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools doxygen graphviz
+
+    # - name: Install Qt
+      # uses: jurplel/install-qt-action@v3
+      # with:
+        # version: '6.5.3'
+        # host: 'linux'
+        # target: 'desktop'
+        # arch: 'gcc_64'
+        # modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
+        # setup-python: 'false'
+
+    # - name: Install Qt
+      # uses: jurplel/install-qt-action@v3
+      # with:
+        # version: '6.5.*'
+        # host: 'linux'
+        # target: 'android'
+        # arch: 'android_x86_64'
+        # modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
+        # setup-python: 'false'
+
+    # - name: generate cmake
+      # run: |
+           # mkdir _build
+           # cd _build
+           # cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DQT_HOST_PATH=/home/runner/work/AusweisApp/Qt/6.5.3/gcc_64 -DCMAKE_ANDROID_ARCH_ABI=x86_64  -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake ..
+
+    # - name: build cmake
+      # run: |
+           # cd _build
+           # cmake --build . --config ${{ matrix.build_configuration }}
+
+    # - name: run ctest
+      # run: |
+           # cd _build
+           # ctest --output-on-failure -C "${{ matrix.build_configuration }}"
+
+  # due to https://bugreports.qt.io/browse/QTBUG-117765 QT 6.5.2 must be used instead of 6.5.3
+  build_macos_cmake:
+
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release]
+        build_platform: ["Unix Makefiles"]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.5.2'
+        modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats'
+        setup-python: 'false'
+
+    - name: generate cmake
+      run: |
+           export OPENSSL_ROOT=/usr/local/opt/openssl/bin
+           export LDFLAGS=-L/usr/local/opt/openssl/lib
+           export CPPFLAGS=-I/usr/local/opt/openssl/include
+           export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
+           mkdir _build
+           cd _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" ..
+
+    - name: build cmake
+      run: |
+           cd _build
+           cmake --build . --config ${{ matrix.build_configuration }}
+
+    - name: run ctest
+      run: |
+           cd _build
+           ctest --output-on-failure -C "${{ matrix.build_configuration }}"
+
+  # failing in cmake generation step: Could NOT find OpenGL (missing: OPENGL_INCLUDE_DIR)
+  # build_ios_cmake:
+
+    # runs-on: macos-latest
+    # strategy:
+      # fail-fast: false
+      # matrix:
+        # build_configuration: [Release]
+        # build_platform: ["Unix Makefiles"]
+
+    # steps:
+    # - uses: actions/checkout@v4
+
+    # - name: Install Qt
+      # uses: jurplel/install-qt-action@v3
+      # with:
+        # version: '6.5.*'
+        # modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+        # setup-python: 'false'
+
+    # - name: Install Qt
+      # uses: jurplel/install-qt-action@v3
+      # with:
+        # version: '6.5.*'
+        # host: 'mac'
+        # target: 'ios'
+        # modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+        # setup-python: 'false'
+
+    # - name: generate cmake
+      # run: |
+           # export OPENSSL_ROOT=/usr/local/opt/openssl/bin
+           # export LDFLAGS=-L/usr/local/opt/openssl/lib
+           # export CPPFLAGS=-I/usr/local/opt/openssl/include
+           # export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
+           # mkdir _build
+           # cd _build
+           # cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DQT_HOST_PATH=/Users/runner/work/AusweisApp/Qt/6.5.3/macos -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake ..
+
+    # - name: build cmake
+      # run: |
+           # cd _build
+           # cmake --build . --config ${{ matrix.build_configuration }}
+
+    # - name: run ctest
+      # run: |
+           # cd _build
+           # ctest --output-on-failure -C "${{ matrix.build_configuration }}"
