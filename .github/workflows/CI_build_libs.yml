@@ -22,14 +22,11 @@ jobs:
 
     - name: generate cmake
       run: |
-           mkdir c:\_build
-           cd c:\_build
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" D:\a\AusweisApp\AusweisApp\libs
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B c:\_build  D:\a\AusweisApp\AusweisApp\libs
 
     - name: build cmake
       run: |
-           cd c:\_build
-           cmake --build . --config ${{ matrix.build_configuration }}
+           cmake --build c:\_build --config ${{ matrix.build_configuration }}
 
   build_linux_cmake:
 
@@ -49,14 +46,11 @@ jobs:
 
     - name: generate cmake
       run: |
-           mkdir _build
-           cd _build
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" ../libs
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B _build  ./libs
 
     - name: build cmake
       run: |
-           cd _build
-           cmake --build . --config ${{ matrix.build_configuration }}
+           cmake --build _build --config ${{ matrix.build_configuration }}
 
   build_linux_android_cmake:
 
@@ -77,14 +71,11 @@ jobs:
 
     - name: generate cmake
       run: |
-           mkdir _build
-           cd _build
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake ../libs
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B _build  ./libs
 
     - name: build cmake
       run: |
-           cd _build
-           cmake --build . --config ${{ matrix.build_configuration }}
+           cmake --build _build --config ${{ matrix.build_configuration }}
 
   build_macos_cmake:
 
@@ -104,14 +95,11 @@ jobs:
 
     - name: generate cmake
       run: |
-           mkdir _build
-           cd _build
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" ../libs
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B _build  ./libs
 
     - name: build cmake
       run: |
-           cd _build
-           cmake --build . --config ${{ matrix.build_configuration }}
+           cmake --build _build --config ${{ matrix.build_configuration }}
 
   build_ios_cmake:
 
@@ -127,11 +115,8 @@ jobs:
 
     - name: generate cmake
       run: |
-           mkdir _build
-           cd _build
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake ../libs
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake -B _build  ./libs
 
     - name: build cmake
       run: |
-           cd _build
-           cmake --build . --config ${{ matrix.build_configuration }}
+           cmake --build _build --config ${{ matrix.build_configuration }}
