@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        build_configuration: [Release]
+        build_configuration: [Release, Debug]
         build_platform: [x64]
 
     steps:
