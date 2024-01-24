@@ -11,6 +11,7 @@ jobs:
       matrix:
         build_configuration: [Release]
         build_platform: ["NMake Makefiles"]
+        build_processor: [x64]
 
     steps:
 
@@ -30,7 +31,7 @@ jobs:
 
     - name: generate cmake
       run: |
-           cmake -G "Visual Studio 17 2022" -A ${{ matrix.build_platform }} -T "v143" -DCMAKE_PREFIX_PATH=c:\_build_libs\dist D:\a\AusweisApp\AusweisApp  -B c:\_build
+           cmake -G "${{ matrix.build_platform }}" -A ${{ matrix.build_processor }} -T "v143" -DCMAKE_PREFIX_PATH=c:\_build_libs\dist D:\a\AusweisApp\AusweisApp  -B c:\_build
 
     - name: build cmake
       run: |
@@ -106,7 +107,7 @@ jobs:
 
     - name: generate cmake
       run: |
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_PREFIX_PATH=./_build_libs/dist -DCMAKE_ANDROID_ARCH_ABI=x86_64  -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_PREFIX_PATH=./_build_libs/dist -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B _build
 
     - name: build cmake
       run: |
