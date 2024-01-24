@@ -19,7 +19,7 @@ jobs:
 
     - name: Install openssl dev
       run: |
-           choco install openssl
+           choco install openssl --version=3.1.1
            dir "C:\Program Files"
 
     - name: Checkout repo
