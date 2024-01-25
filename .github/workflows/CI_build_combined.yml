@@ -1,4 +1,4 @@
-name: CI_build_libs
+name: CI_build_combined
 
 on: [push, pull_request]
 
@@ -10,8 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         build_configuration: [Release]
-        build_platform: ["NMake Makefiles"]
-        build_processor: [x64]
+        build_platform: ["NMake Makefiles JOM"]
 
     steps:
 
@@ -31,7 +30,7 @@ jobs:
 
     - name: generate cmake
       run: |
-           cmake -G "${{ matrix.build_platform }}" -A ${{ matrix.build_processor }} -T "v143" -DCMAKE_PREFIX_PATH=c:\_build_libs\dist D:\a\AusweisApp\AusweisApp  -B c:\_build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_PREFIX_PATH=c:\_build_libs\dist D:\a\AusweisApp\AusweisApp  -B c:\_build
 
     - name: build cmake
       run: |
