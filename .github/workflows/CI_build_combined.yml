@@ -11,8 +11,8 @@ jobs:
       matrix:
         build_configuration: [Release]
         build_platform: ["NMake Makefiles JOM"]
-        build_dir_libs: ["c:\_build_libs"]
-        build_dir_app: ["c:\_build"]
+        build_dir_libs: ["c:/_build_libs"]
+        build_dir_app: ["c:/_build"]
 
     steps:
 
