@@ -33,24 +33,24 @@ jobs:
 
     - name: generate cmake libs
       run: |
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B "$BUILD_DIR_LIBS_WIN"  D:\a\AusweisApp\AusweisApp\libs
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B "${{ env.BUILD_DIR_LIBS_WIN }}"  D:\a\AusweisApp\AusweisApp\libs
 
     - name: build cmake libs
       run: |
-           cmake --build "$BUILD_DIR_LIBS_WIN" --config ${{ matrix.build_configuration }}
+           cmake --build "${{ env.BUILD_DIR_LIBS_WIN }}" --config ${{ matrix.build_configuration }}
 
     - name: generate cmake
       run: |
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B "$BUILD_DIR_APP_WIN"  -DCMAKE_PREFIX_PATH=c:\_build_libs\dist D:\a\AusweisApp\AusweisApp
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B "${{ env.BUILD_DIR_APP_WIN }}"  -DCMAKE_PREFIX_PATH=c:\_build_libs\dist D:\a\AusweisApp\AusweisApp
 
     - name: build cmake
       run: |
-           cmake --build "$BUILD_DIR_APP_WIN" --config ${{ matrix.build_configuration }} --target package
-           cmake --install "$BUILD_DIR_APP_WIN"
+           cmake --build "${{ env.BUILD_DIR_APP_WIN }}" --config ${{ matrix.build_configuration }} --target package
+           cmake --install "${{ env.BUILD_DIR_APP_WIN }}"
 
     - name: run ctest
       run: |
-           ctest --test-dir "$BUILD_DIR_APP_WIN" --output-on-failure -C "${{ matrix.build_configuration }}"
+           ctest --test-dir "${{ env.BUILD_DIR_APP_WIN }}" --output-on-failure -C "${{ matrix.build_configuration }}"
 
 
 
