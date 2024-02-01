@@ -42,7 +42,7 @@ jobs:
 
     - name: Install packages via apt
       run: |
-           sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libdbus-1-dev libclang-13-dev ninja-build
+           sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libdbus-1-dev libclang-15-dev ninja-build
 
     - name: generate cmake
       run: |
@@ -66,7 +66,7 @@ jobs:
 
     - name: Install packages via apt
       run: |
-           sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libdbus-1-dev libclang-13-dev ninja-build
+           sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libdbus-1-dev libclang-15-dev ninja-build
            sudo apt -y remove firefox microsoft-edge-stable google-chrome-stable kotlin libmono* mono-runtime
 
     - name: generate cmake
