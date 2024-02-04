@@ -13,14 +13,17 @@ jobs:
       fail-fast: false
       matrix:
         build_configuration: [Release, Debug]
-        build_platform: ["Ninja"]
+        build_platform: ["NMake Makefiles JOM", "Ninja"]
 
     steps:
 
     - name: Install openssl dev
       run: |
            choco install openssl --version=3.1.1
-           choco install ninja
+           choco install jom ninja
+
+    - name: Add nmake
+      uses: ilammy/msvc-dev-cmd@v1
 
     - name: Checkout repo
       uses: actions/checkout@v4
@@ -96,7 +99,7 @@ jobs:
 
     - name: Install packages via apt
       run: |
-           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools doxygen graphviz
+           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libglvnd-dev qt6-l10n-tools doxygen graphviz
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
