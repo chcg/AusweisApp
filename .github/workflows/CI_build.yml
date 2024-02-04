@@ -4,7 +4,6 @@ on: [push, pull_request]
 
 jobs:
 
-  #failing with D:\a\AusweisApp\AusweisApp\test\helper\common\MockReleaseInformation.cpp(42,35): error C2248: 'QString::QString': cannot access private member declared in class 'QString' [C:\_build\test\helper\common\AusweisAppTestHelperCommon.vcxproj]
   build_windows:
 
 
@@ -13,14 +12,14 @@ jobs:
       fail-fast: false
       matrix:
         build_configuration: [Release, Debug]
-        build_platform: ["NMake Makefiles JOM", "Ninja"]
+        build_platform: ["Ninja"]
 
     steps:
 
     - name: Install openssl dev
       run: |
            choco install openssl --version=3.1.1
-           choco install jom ninja
+           choco install ninja
 
     - name: Add nmake
       uses: ilammy/msvc-dev-cmd@v1
@@ -37,15 +36,16 @@ jobs:
 
     - name: generate cmake
       run: |
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" D:\a\AusweisApp\AusweisApp  -B c:\_build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B _build
 
     - name: build cmake
       run: |
-           cmake --build c:\_build --config ${{ matrix.build_configuration }} --target package
+           cmake --build _build --config ${{ matrix.build_configuration }} --target package
+           cmake --install _build
 
     - name: run ctest
       run: |
-           ctest --test-dir c:\_build --output-on-failure -C "${{ matrix.build_configuration }}"
+           ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
 
   # ubuntu 22.04 comes just with QT 6.2.4 and Qt >= 6.4 is required
   build_linux_cmake:
@@ -99,7 +99,7 @@ jobs:
 
     - name: Install packages via apt
       run: |
-           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libglvnd-dev qt6-l10n-tools doxygen graphviz
+           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools doxygen graphviz
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
