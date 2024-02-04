@@ -13,20 +13,16 @@ jobs:
       fail-fast: false
       matrix:
         build_configuration: [Release, Debug]
-        build_platform: [x64]
+        build_platform: ["Ninja"]
 
     steps:
 
     - name: Install openssl dev
       run: |
-           choco install openssl --version=3.1.1
-           dir "C:\Program Files"
+           choco install ninja openssl --version=3.1.1
 
     - name: Checkout repo
       uses: actions/checkout@v4
-
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
@@ -37,7 +33,7 @@ jobs:
 
     - name: generate cmake
       run: |
-           cmake -G "Visual Studio 17 2022" -A ${{ matrix.build_platform }} -T "v143" D:\a\AusweisApp\AusweisApp  -B c:\_build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" D:\a\AusweisApp\AusweisApp  -B c:\_build
 
     - name: build cmake
       run: |
@@ -67,7 +63,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.5.*'
+        version: '6.6.*'
         modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
         setup-python: 'false'
 

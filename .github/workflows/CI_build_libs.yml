@@ -2,6 +2,12 @@ name: CI_build_libs
 
 on: [push, pull_request]
 
+env:
+  BUILD_DIR_LIBS_WIN: "c:/_build_libs"
+  BUILD_DIR_APP_WIN: "c:/_build"
+  BUILD_DIR_LIBS: "_build_libs"
+  BUILD_DIR_APP: "_build"
+
 jobs:
   build:
 
