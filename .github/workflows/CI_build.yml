@@ -19,7 +19,8 @@ jobs:
 
     - name: Install openssl dev
       run: |
-           choco install ninja openssl --version=3.1.1
+           choco install openssl --version=3.1.1
+           choco install ninja
 
     - name: Checkout repo
       uses: actions/checkout@v4
