@@ -99,7 +99,7 @@ jobs:
 
     - name: Install packages via apt
       run: |
-           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools doxygen graphviz
+           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev libegl1-mesa-dev qt6-l10n-tools doxygen graphviz
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
