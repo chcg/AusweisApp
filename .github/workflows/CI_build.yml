@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
       matrix:
         build_configuration: [Release, Debug]
-        build_platform: ["Ninja"]
+        build_platform: ["NMake Makefiles"]
 
     steps:
 
