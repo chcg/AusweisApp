@@ -180,7 +180,7 @@ jobs:
 
     - name: generate cmake
       run: |
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DQT_HOST_PATH=/home/runner/work/AusweisApp/Qt/6.5.3/gcc_64 -DCMAKE_ANDROID_ARCH_ABI=x86_64  -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B _build
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DQT_HOST_PATH=/home/runner/work/AusweisApp/Qt/6.5.3/gcc_64 -DCMAKE_ANDROID_ARCH_ABI=arm64-v8a  -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B _build
 
     - name: build cmake
       run: |
