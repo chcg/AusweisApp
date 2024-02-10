@@ -47,62 +47,6 @@ jobs:
       run: |
            ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
 
-  build_windows_android:
-
-
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        build_configuration: [Release, Debug]
-        build_platform: ["MinGW Makefiles"]
-
-    steps:
-
-    - name: Install openssl dev
-      run: |
-           choco install openssl --version=3.1.1
-           choco install ninja
-
-    - name: Add nmake
-      uses: ilammy/msvc-dev-cmd@v1
-
-    - name: Checkout repo
-      uses: actions/checkout@v4
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: '6.5.*'
-        modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats'
-        setup-python: 'false'
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: '6.5.*'
-        host: 'windows'
-        target: 'android'
-        arch: 'android_armv7'
-        modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats'
-        setup-python: 'false'
-
-
-    - name: generate cmake
-      run: |
-           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE="..\cmake\android.toolchain.cmake" -B _build
-
-    - name: build cmake
-      run: |
-           cmake --build _build --config ${{ matrix.build_configuration }} --target package
-           cmake --install _build
-
-    - name: run ctest
-      run: |
-           ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
-
-
-
 
   # ubuntu 22.04 comes just with QT 6.2.4 and Qt >= 6.4 is required
   build_linux_cmake:
@@ -266,6 +210,53 @@ jobs:
     - name: build cmake
       run: |
            cmake --build _build --config ${{ matrix.build_configuration }}
+
+    - name: run ctest
+      run: |
+           ctest --test-dir _build --output-on-failure -C "${{ matrix.build_configuration }}"
+
+
+  build_macos_android:
+
+
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build_configuration: [Release, Debug]
+        build_platform: ["Unix Makefiles"]
+
+    steps:
+
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.5.*'
+        modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+        setup-python: 'false'
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.5.*'
+        host: 'macos'
+        target: 'android'
+        arch: 'android_arm64_v8a'
+        modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
+        setup-python: 'false'
+
+
+    - name: generate cmake
+      run: |
+           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -DCMAKE_TOOLCHAIN_FILE="..\cmake\android.toolchain.cmake" -B _build
+
+    - name: build cmake
+      run: |
+           cmake --build _build --config ${{ matrix.build_configuration }} --target package
+           cmake --install _build
 
     - name: run ctest
       run: |
