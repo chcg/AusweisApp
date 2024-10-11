@@ -66,7 +66,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.7.2'
+        version: '6.7.*'
         modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity'
         setup-python: 'false'
 
@@ -98,7 +98,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.7.2'
+        version: '6.7.*'
         modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats'
 
     - name: generate cmake
