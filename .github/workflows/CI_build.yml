@@ -15,7 +15,7 @@ jobs:
 
     steps:
 
-    - name: Install openssl dev
+    - name: Install openssl dev and ninja
       run: |
            choco install openssl --version=3.3.2
            choco install ninja
@@ -53,14 +53,14 @@ jobs:
       fail-fast: false
       matrix:
         build_configuration: [Release]
-        build_platform: ["Unix Makefiles"]
+        build_platform: ["Ninja"]
 
     steps:
     - uses: actions/checkout@v4
 
     - name: Install packages via apt
       run: |
-           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools
+           sudo apt update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libhttp-parser-dev libpcsclite-dev libgl1-mesa-dev qt6-l10n-tools ninja-build
 
     # ubuntu 22.04 comes just with QT 6.2.4 and Qt >= 6.4 is required
     - name: Install Qt
