@@ -86,7 +86,7 @@ jobs:
       - name: generate cmake
         run: |
           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" -B ${{ env.BUILD_DIR_APP }} \
-                -DCMAKE_PREFIX_PATH=./_build_libs/dist
+                -DCMAKE_PREFIX_PATH=../_build_libs/dist
 
       - name: build cmake
         run: |
@@ -128,8 +128,8 @@ jobs:
       - name: generate cmake
         run: |
           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
-                -DCMAKE_PREFIX_PATH=/home/runner/work/AusweisApp/AusweisApp/_build_libs/dist \
-                -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
+                -DCMAKE_PREFIX_PATH=/home/runner/work/AusweisApp/_build_libs/dist \
+                -DCMAKE_TOOLCHAIN_FILE=./cmake/android.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
@@ -167,7 +167,7 @@ jobs:
       - name: generate cmake
         run: |
           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
-                -DCMAKE_PREFIX_PATH=./_build_libs/dist -B ${{ env.BUILD_DIR_APP }}
+                -DCMAKE_PREFIX_PATH=../_build_libs/dist -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
@@ -206,8 +206,8 @@ jobs:
       - name: generate cmake
         run: |
           cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
-                -DCMAKE_PREFIX_PATH=/Users/runner/work/AusweisApp/AusweisApp/_build_libs/dist \
-                -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
+                -DCMAKE_PREFIX_PATH=/Users/runner/work/AusweisApp/_build_libs/dist \
+                -DCMAKE_TOOLCHAIN_FILE=./cmake/iOS.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |

@@ -130,7 +130,7 @@ jobs:
         run: |
              cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
                    -DQT_HOST_PATH=/home/runner/work/AusweisApp/Qt/6.9.2/gcc_64 -DCMAKE_ANDROID_ARCH_ABI=x86_64 \
-                   -DCMAKE_TOOLCHAIN_FILE=../cmake/android.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
+                   -DCMAKE_TOOLCHAIN_FILE=../AusweisApp/cmake/android.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
@@ -198,14 +198,13 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.9.*'
+          version: '6.9.2'
           modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
-          setup-python: 'false'
 
       - name: Install Qt ios
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.9.*'
+          version: '6.9.2'
           host: 'mac'
           target: 'ios'
           modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
@@ -219,7 +218,7 @@ jobs:
              export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
              cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
                    -DQT_HOST_PATH=/Users/runner/work/AusweisApp/Qt/6.9.2/macos \
-                   -DCMAKE_TOOLCHAIN_FILE=../cmake/iOS.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
+                   -DCMAKE_TOOLCHAIN_FILE=../AusweisApp/cmake/iOS.toolchain.cmake -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
@@ -253,7 +252,6 @@ jobs:
         with:
           version: '6.9.*'
           modules: 'qtscxml qtwebsockets qtshadertools qtconnectivity qtimageformats qtquick3d'
-          setup-python: 'false'
 
       - name: Install Qt android
         uses: jurplel/install-qt-action@v4
@@ -273,7 +271,7 @@ jobs:
              export CPPFLAGS=-I/usr/local/opt/openssl/include
              export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
              cmake -G "${{ matrix.build_platform }}" -DCMAKE_BUILD_TYPE="${{ matrix.build_configuration }}" \
-                   -DCMAKE_TOOLCHAIN_FILE="..\cmake\android.toolchain.cmake" -B ${{ env.BUILD_DIR_APP }}
+                   -DCMAKE_TOOLCHAIN_FILE="..\AusweisApp\cmake\android.toolchain.cmake" -B ${{ env.BUILD_DIR_APP }}
 
       - name: build cmake
         run: |
