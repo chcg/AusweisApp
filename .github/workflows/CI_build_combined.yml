@@ -29,10 +29,6 @@ jobs:
         run: |
           git config --global core.autocrlf false
 
-      - name: Set up GITHUB_PATH for patch on Windows
-        # Needed to use GNU patch instead of Strawberry Perl patch (https://github.com/actions/runner-images/issues/5459)
-        run: echo "C:\Program Files\Git\usr\bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
-
       - name: Checkout repo
         uses: actions/checkout@v6
 
@@ -76,7 +72,7 @@ jobs:
 
       - name: Install packages via apt
         run: |
-          sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev llhttp-dev libpcsclite-dev \
+          sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libpcsclite-dev \
                                      libgl1-mesa-dev libdbus-1-dev libclang-20-dev libclang-21-dev libclang-22-dev ninja-build
 
       - name: generate cmake libs
@@ -115,7 +111,7 @@ jobs:
 
       - name: Install packages via apt
         run: |
-          sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev llhttp-dev libpcsclite-dev \
+          sudo apt-get update -qq && sudo apt install -y cmake pkg-config libssl-dev libudev-dev libllhttp-dev libpcsclite-dev \
                                      libgl1-mesa-dev libdbus-1-dev libclang-20-dev libclang-21-dev libclang-22-dev ninja-build
           sudo apt -y remove firefox microsoft-edge-stable google-chrome-stable kotlin libmono* mono-runtime
 
