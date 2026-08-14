@@ -82,7 +82,6 @@ class AppController final
 		void onUiDominationRequested(const UiPlugin* pUi, const QString& pInformation);
 		void onUiDominationRelease();
 		void onRestartApplicationRequested();
-		void onShowUiRequested(UiModule pModule);
 
 	private:
 		bool startNewWorkflow(const QSharedPointer<WorkflowRequest>& pRequest);

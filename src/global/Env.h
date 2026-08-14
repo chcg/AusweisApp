@@ -34,7 +34,7 @@ namespace governikus
 {
 
 template<typename T> T* singleton();
-template<typename T, typename ... Args> T createNewObject(Args && ... pArgs);
+template<typename T, typename ... Args> T createNewObject(Args&& ... pArgs);
 
 class Env
 {
@@ -125,7 +125,7 @@ class Env
 			qDebug() << "Create singleton:" << T::staticMetaObject.className();
 
 			T* ptr = nullptr;
-			if constexpr (std::is_abstract_v<T>&& std::is_destructible_v<T>)
+			if constexpr (std::is_abstract_v<T> && std::is_destructible_v<T>)
 			{
 				ptr = createNewObject<T*>();
 			}
@@ -169,7 +169,7 @@ class Env
 			}
 			else
 			{
-				if constexpr (std::is_abstract_v<T>&& std::is_destructible_v<T>)
+				if constexpr (std::is_abstract_v<T> && std::is_destructible_v<T>)
 				{
 					static_assert(std::has_virtual_destructor_v<T>, "Destructor must be virtual");
 					return singleton<T>();

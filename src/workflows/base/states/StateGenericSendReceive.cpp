@@ -221,8 +221,8 @@ std::optional<FailureCode> StateGenericSendReceive::checkSslConnectionAndSaveCer
 		infoMap.insert(GlobalStatus::ExternalInformation::LAST_URL, mReply->url().toString());
 	}
 
-	if (!context->getTcToken()->usePsk() &&
-			!TlsChecker::hasValidEphemeralKeyLength(pSslConfiguration.ephemeralServerKey()))
+	const auto& ephemeralServerKey = pSslConfiguration.ephemeralServerKey();
+	if (!ephemeralServerKey.isNull() && !TlsChecker::hasValidEphemeralKeyLength(ephemeralServerKey))
 	{
 		updateStatus({GlobalStatus::Code::Workflow_TrustedChannel_Ssl_Connection_Unsupported_Algorithm_Or_Length, infoMap});
 

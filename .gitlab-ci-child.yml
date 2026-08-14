@@ -297,7 +297,8 @@ Formatting:
       artifacts: false
       optional: true
   script:
-    - apk add dos2unix uncrustify ruff yamlfmt
+    - apk add dos2unix ruff yamlfmt
+    - apk add --repository $MIRROR_ALPINE/alpine/v3.24/community uncrustify
     - uv pip install python-hglib
     - cmake -P source/ci.cmake | tee output.log
     - if grep -q "FORMATTING FAILED" output.log; then exit 1; fi
@@ -728,6 +729,8 @@ Win_MSVC:
 
 .Deploy:
   extends: .Base
+  tags:
+    - $DEPLOY_RUNNER
   stage: deploy
   script:
     - find build -type f -exec mv {} $CI_PROJECT_DIR/ \;

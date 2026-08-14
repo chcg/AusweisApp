@@ -249,21 +249,20 @@ ApplicationWindow {
 			d.ensureScreenFit();
 
 			switch (ApplicationModel.currentWorkflow) {
-			case ApplicationModel.Workflow.CHANGE_PIN:
-				if (pModule !== UiModule.PINMANAGEMENT) {
-					return;
-				}
-				break;
 			case ApplicationModel.Workflow.SELF_AUTHENTICATION:
 			case ApplicationModel.Workflow.AUTHENTICATION:
-				if (pModule !== UiModule.IDENTIFY) {
-					return;
+				if (pModule === UiModule.IDENTIFY) {
+					break;
 				}
-				break;
+			// fallthrough
+			case ApplicationModel.Workflow.CHANGE_PIN:
 			case ApplicationModel.Workflow.REMOTE_SERVICE:
-			case ApplicationModel.Workflow.NONE:
+				console.log("Suppressing activation of UiModule", pModule, "since a workflow is active");
+				return;
+			default:
 				break;
 			}
+
 			contentArea.setUiModule(pModule);
 		}
 

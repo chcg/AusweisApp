@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/AusweisApp_Roboto_Bold.ttf</file>
+        <file>fonts/AusweisApp_Roboto_Medium.ttf</file>
+        <file>fonts/AusweisApp_Roboto_Regular.ttf</file>
+    </qresource>
+</RCC>

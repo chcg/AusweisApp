@@ -141,8 +141,6 @@ FlickableSectionPage {
 		}
 	}
 	ColumnLayout {
-		Layout.leftMargin: Style.dimens.pane_padding
-		Layout.rightMargin: Style.dimens.pane_padding
 		spacing: Style.dimens.pane_spacing
 
 		TintableIcon {

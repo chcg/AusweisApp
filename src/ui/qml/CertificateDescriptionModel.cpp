@@ -132,7 +132,7 @@ QString CertificateDescriptionModel::getPurpose() const
 
 QString CertificateDescriptionModel::getValidity() const
 {
-	if (const auto authContext = mContext.objectCast<AuthContext>(); authContext&& authContext->getAccessRightManager() && authContext->getAccessRightManager()->getTerminalCvc())
+	if (const auto authContext = mContext.objectCast<AuthContext>(); authContext && authContext->getAccessRightManager() && authContext->getAccessRightManager()->getTerminalCvc())
 	{
 		const CVCertificateBody body = authContext->getAccessRightManager()->getTerminalCvc()->getBody();
 		const auto locale = LanguageLoader::getInstance().getUsedLocale();

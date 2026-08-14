@@ -130,23 +130,20 @@ ApplicationWindow {
 	Connections {
 		function onFireShowRequest(pModule) {
 			switch (ApplicationModel.currentWorkflow) {
-			case ApplicationModel.Workflow.CHANGE_PIN:
-				if (pModule !== UiModule.PINMANAGEMENT) {
-					return;
-				}
-				break;
 			case ApplicationModel.Workflow.SELF_AUTHENTICATION:
 			case ApplicationModel.Workflow.AUTHENTICATION:
-				if (pModule !== UiModule.IDENTIFY) {
-					return;
+				if (pModule === UiModule.IDENTIFY) {
+					break;
 				}
-				break;
+			// fallthrough
+			case ApplicationModel.Workflow.CHANGE_PIN:
 			case ApplicationModel.Workflow.REMOTE_SERVICE:
-				if (pModule !== UiModule.REMOTE_SERVICE) {
+				if (navigation.lockedAndHidden) {
+					console.log("Suppressing activation of UiModule", pModule, "since a workflow is active or the navigation is hidden");
 					return;
 				}
 				break;
-			case ApplicationModel.Workflow.NONE:
+			default:
 				break;
 			}
 

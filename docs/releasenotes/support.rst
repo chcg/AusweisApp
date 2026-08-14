@@ -71,39 +71,8 @@ Kartenleser
 Alle Kartenleser, die die Online-Ausweisfunktion unterstützen und nach
 BSI TR-03119 zertifiziert sind. Details hierzu befinden sich auf der Website
 des BSI unter `Zertifizierte Produkte - Chipkartenleser mit PA-Unterstützung
-<https://www.bsi.bund.de/dok/6618012>`_.
-
-
-- ACS ACR1281U-C1
-
-- ACS ACR1581U-C1
-
-- Cherry Secure Board 1.0
-
-- HID OMNIKEY 5022 CL
-
-- HID OMNIKEY 5422
-
-- Identiv 3700 F
-
-- Identiv 3720 F
-
-- Identiv 3721 F
-
-- Identiv 4701 F
-
-- Identiv Cloud 4700 F
-
-- Identiv SCL01x
-
-- Identiv SCL3711
-
-- REINER SCT cyberJack wave (via USB)
-
-- Signotec Omega Pad
-
-
-Aktuelle Informationen zu Kartenlesern finden Sie auf unserer Website unter
+<https://www.bsi.bund.de/dok/6618012>`_. Aktuelle Informationen zu
+Kartenlesern finden Sie auf unserer Website unter
 `USB-Kartenleser <https://www.ausweisapp.bund.de/aa2/cardreader>`_.
 
 Alle NFC-fähigen Smartphones bzw. Tablets, die die Online-Ausweisfunktion

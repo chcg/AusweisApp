@@ -38,9 +38,6 @@
         <file>animations/wait_for_idcard_usb.svg</file>
         <file>animations/wait_for_reader.svg</file>
         <file>animations/wait_for_sac.svg</file>
-        <file>fonts/AusweisApp_Roboto_Bold.ttf</file>
-        <file>fonts/AusweisApp_Roboto_Medium.ttf</file>
-        <file>fonts/AusweisApp_Roboto_Regular.ttf</file>
         <file>images/appearance_dark_mode.svg</file>
         <file>images/appearance_light_mode.svg</file>
         <file>images/appearance_system_mode.svg</file>

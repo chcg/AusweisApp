@@ -125,6 +125,35 @@ class test_Template
 		}
 
 
+		void escaping()
+		{
+			QString plain("<script>document.title='XSS'</script>"_L1);
+			QString escaped1("&lt;script&gt;document.title='XSS'&lt;/script&gt;"_L1);
+			QString escaped2("&amp;lt;script&amp;gt;document.title='XSS'&amp;lt;/script&amp;gt;"_L1);
+
+			Template tplt = Template::fromFile(QStringLiteral(":/template.html"));
+
+			tplt.setContextParameter(QStringLiteral("TITLE"), plain);
+			tplt.setContextParameter(QStringLiteral("APPLICATION_LINK"), escaped1);
+			tplt.setContextParameter(QStringLiteral("MESSAGE_HEADER"), plain);
+			tplt.setContextParameter(QStringLiteral("MESSAGE_HEADER_EXPLANATION"), escaped1);
+			tplt.setContextParameter(QStringLiteral("MESSAGE_SUBHEADER_LABEL"), plain);
+			tplt.setContextParameter(QStringLiteral("MESSAGE_SUBHEADER"), escaped1);
+			tplt.setContextParameter(QStringLiteral("CONTENT_HEADER"), plain);
+			tplt.setContextParameter(QStringLiteral("CONTENT_LINK"), escaped1);
+			tplt.setContextParameter(QStringLiteral("CONTENT_BUTTON"), plain);
+			tplt.setContextParameter(QStringLiteral("AUSWEISAPP_LOGO"), escaped1);
+
+			const auto& errorPage = tplt.render();
+			QCOMPARE(tplt.getContextKeys().size(), 10);
+			QVERIFY(!errorPage.contains('$'_L1));
+
+			QVERIFY(!errorPage.contains(plain));
+			QCOMPARE(errorPage.count(escaped1), 5);
+			QCOMPARE(errorPage.count(escaped2), 5);
+		}
+
+
 		void renderAlreadyActivePage()
 		{
 			QString title("test title"_L1);

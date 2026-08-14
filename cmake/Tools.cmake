@@ -257,13 +257,13 @@ if(INKSCAPE)
 		COMMAND ${INKSCAPE} npa_release.svg -w 256 -h 256 -y 0 -o Images.xcassets/LaunchImage.imageset/launchImage.png
 		COMMAND ${INKSCAPE} npa_release.svg -w 512 -h 512 -y 0 -o Images.xcassets/LaunchImage.imageset/launchImage@2x.png
 		COMMAND ${INKSCAPE} npa_release.svg -w 768 -h 768 -y 0 -o Images.xcassets/LaunchImage.imageset/launchImage@3x.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios)
 
 	add_custom_target(npaicons.ios.launchimage.beta
 		COMMAND ${INKSCAPE} npa_beta.svg -w 256 -h 256 -y 0 -o beta/Images.xcassets/LaunchImage.imageset/launchImage.png
 		COMMAND ${INKSCAPE} npa_beta.svg -w 512 -h 512 -y 0 -o beta/Images.xcassets/LaunchImage.imageset/launchImage@2x.png
 		COMMAND ${INKSCAPE} npa_beta.svg -w 768 -h 768 -y 0 -o beta/Images.xcassets/LaunchImage.imageset/launchImage@3x.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios)
 
 	add_custom_target(npaicons.ios
 		COMMAND ${INKSCAPE} npa_release.svg -w 20 -h 20 -y 1 -b '${BACKGROUND_COLOR}' -o Images.xcassets/AppIcon.appiconset/icon20.png
@@ -281,7 +281,7 @@ if(INKSCAPE)
 		COMMAND ${INKSCAPE} npa_release.svg -w 152 -h 152 -y 1 -b '${BACKGROUND_COLOR}' -o Images.xcassets/AppIcon.appiconset/icon76@2x.png
 		COMMAND ${INKSCAPE} npa_release.svg -w 167 -h 167 -y 1 -b '${BACKGROUND_COLOR}' -o Images.xcassets/AppIcon.appiconset/icon83.5@2x.png
 		COMMAND ${INKSCAPE} npa_release.svg -w 1024 -h 1024 -y 1 -b '${BACKGROUND_COLOR}' -o Images.xcassets/AppIcon.appiconset/icon1024.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios)
 
 	add_custom_target(npaicons.ios.beta
 		COMMAND ${INKSCAPE} npa_beta.svg -w 20 -h 20 -y 1 -b '${BACKGROUND_COLOR}' -o beta/Images.xcassets/AppIcon.appiconset/icon20.png
@@ -299,7 +299,7 @@ if(INKSCAPE)
 		COMMAND ${INKSCAPE} npa_beta.svg -w 152 -h 152 -y 1 -b '${BACKGROUND_COLOR}' -o beta/Images.xcassets/AppIcon.appiconset/icon76@2x.png
 		COMMAND ${INKSCAPE} npa_beta.svg -w 167 -h 167 -y 1 -b '${BACKGROUND_COLOR}' -o beta/Images.xcassets/AppIcon.appiconset/icon83.5@2x.png
 		COMMAND ${INKSCAPE} npa_beta.svg -w 1024 -h 1024 -y 1 -b '${BACKGROUND_COLOR}' -o beta/Images.xcassets/AppIcon.appiconset/icon1024.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios)
 
 	add_custom_target(npaicons DEPENDS
 			npaicons.general
@@ -398,13 +398,13 @@ if(PNGQUANT)
 		COMMAND ${PNGQUANT_CMD} launchImage.png -- launchImage.png
 		COMMAND ${PNGQUANT_CMD} launchImage@2x.png -- launchImage@2x.png
 		COMMAND ${PNGQUANT_CMD} launchImage@3x.png -- launchImage@3x.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons/Images.xcassets/LaunchImage.imageset)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/Images.xcassets/LaunchImage.imageset)
 
 	add_custom_target(pngquant.ios.launchimage.beta
 		COMMAND ${PNGQUANT_CMD} launchImage.png -- launchImage.png
 		COMMAND ${PNGQUANT_CMD} launchImage@2x.png -- launchImage@2x.png
 		COMMAND ${PNGQUANT_CMD} launchImage@3x.png -- launchImage@3x.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons/beta/Images.xcassets/LaunchImage.imageset)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/beta/Images.xcassets/LaunchImage.imageset)
 
 	add_custom_target(pngquant.ios
 		COMMAND ${PNGQUANT_CMD} icon20.png -- icon20.png
@@ -422,7 +422,7 @@ if(PNGQUANT)
 		COMMAND ${PNGQUANT_CMD} icon76@2x.png -- icon76@2x.png
 		COMMAND ${PNGQUANT_CMD} icon83.5@2x.png -- icon83.5@2x.png
 		COMMAND ${PNGQUANT_CMD} icon1024.png -- icon1024.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons/Images.xcassets/AppIcon.appiconset)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/Images.xcassets/AppIcon.appiconset)
 
 	add_custom_target(pngquant.ios.beta
 		COMMAND ${PNGQUANT_CMD} icon20.png -- icon20.png
@@ -440,7 +440,7 @@ if(PNGQUANT)
 		COMMAND ${PNGQUANT_CMD} icon76@2x.png -- icon76@2x.png
 		COMMAND ${PNGQUANT_CMD} icon83.5@2x.png -- icon83.5@2x.png
 		COMMAND ${PNGQUANT_CMD} icon1024.png -- icon1024.png
-		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/appIcons/beta/Images.xcassets/AppIcon.appiconset)
+		WORKING_DIRECTORY ${RESOURCES_DIR}/images/ios/beta/Images.xcassets/AppIcon.appiconset)
 
 	add_custom_target(pngquant DEPENDS
 			pngquant.general
@@ -476,32 +476,32 @@ if(INKSCAPE AND APPLE AND NOT IOS)
 		set(BUNDLE_ICON_SET_DIR ${CMAKE_CURRENT_BINARY_DIR}/bundle_icons.iconset)
 		add_custom_target(npaicons.mac
 			COMMAND ${CMAKE_COMMAND} -E make_directory ${BUNDLE_ICON_SET_DIR}
-			COMMAND ${INKSCAPE} appIcon.svg -w 16 -h 16 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16@2x.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 64 -h 64 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32@2x.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 128 -h 128 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128@2x.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256@2x.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512.png
-			COMMAND ${INKSCAPE} appIcon.svg -w 1024 -h 1024 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512@2x.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 16 -h 16 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16@2x.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 64 -h 64 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32@2x.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 128 -h 128 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128@2x.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256@2x.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512.png
+			COMMAND ${INKSCAPE} npa_release.svg -w 1024 -h 1024 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512@2x.png
 			COMMAND ${ICONUTIL} -c icns --output "${PROJECT_NAME}.icns" ${BUNDLE_ICON_SET_DIR}
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${BUNDLE_ICON_SET_DIR}
 			WORKING_DIRECTORY ${RESOURCES_DIR}/images/macos)
 
 		add_custom_target(npaicons.mac.beta
 			COMMAND ${CMAKE_COMMAND} -E make_directory ${BUNDLE_ICON_SET_DIR}
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 16 -h 16 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16@2x.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 64 -h 64 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32@2x.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 128 -h 128 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128@2x.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256@2x.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512.png
-			COMMAND ${INKSCAPE} appIconBeta.svg -w 1024 -h 1024 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512@2x.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 16 -h 16 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_16x16@2x.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 32 -h 32 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 64 -h 64 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_32x32@2x.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 128 -h 128 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_128x128@2x.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 256 -h 256 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_256x256@2x.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 512 -h 512 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512.png
+			COMMAND ${INKSCAPE} npa_beta.svg -w 1024 -h 1024 -y 0 -o ${BUNDLE_ICON_SET_DIR}/icon_512x512@2x.png
 			COMMAND ${ICONUTIL} -c icns --output "beta/${PROJECT_NAME}.icns" ${BUNDLE_ICON_SET_DIR}
 			COMMAND ${CMAKE_COMMAND} -E remove_directory ${BUNDLE_ICON_SET_DIR}
 			WORKING_DIRECTORY ${RESOURCES_DIR}/images/macos)

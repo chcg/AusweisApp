@@ -69,7 +69,7 @@ bool Template::setContextParameter(const QString& pKey, const QString& pValue)
 	{
 		qCWarning(webservice) << "Overwriting already set key:" << pKey;
 	}
-	mContext[pKey] = pValue;
+	mContext[pKey] = pValue.toHtmlEscaped();
 	return true;
 }
 

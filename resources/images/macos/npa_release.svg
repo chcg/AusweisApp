@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 45 45">
+  <defs>
+    <g id="background_apple">
+      <rect x="0" y="0" width="37" height="37" rx="9.5" ry="9.5" style="fill:#5489c2" />
+      <rect x="1.1" y="1.1" width="34.8" height="34.8" rx="8.5" ry="8.5" style="fill:#ffffff" />
+    </g>
+    <linearGradient id="greenGradient"
+                    x1="0" y1="0" x2="1" y2="0"
+                    spreadMethod="pad"
+                    gradientUnits="userSpaceOnUse"
+                    gradientTransform="matrix(0,-26.61169,26.61169,0,5.06287,31.67544)">
+      <stop style="stop-color:#58ab27;stop-opacity:1" offset="0" />
+      <stop style="stop-color:#93c36c;stop-opacity:1" offset="0.78019702" />
+    </linearGradient>
+    <linearGradient id="blueGradient"
+                    x1="0" y1="0" x2="1" y2="0"
+                    spreadMethod="pad"
+                    gradientUnits="userSpaceOnUse"
+                    gradientTransform="matrix(0,26.61169,26.61169,0,19.60739,5.06376)">
+      <stop style="stop-color:#88bce2;stop-opacity:1" offset="0" />
+      <stop style="stop-color:#5489c2;stop-opacity:1" offset="1" />
+    </linearGradient>
+    <g id="circle">
+      <path d="M 17.25 5.058 v 4.832 a 8.7 8.7 0 0 0 0 17.22 v 4.832 a 13.5 13.5 0 0 1 0 -26.884 z" fill="url(#greenGradient)" />
+      <path d="M 19.75 5.058 v 4.832 a 8.7 8.7 0 0 1 0 17.22 v 4.832 a 13.5 13.5 0 0 0 0 -26.884 z" fill="url(#blueGradient)" />
+    </g>
+  </defs>
+  <!-- Remove definitions and use ../npa.svg# when QTBUG-148476 is solved.  -->
+  <use xlink:href="#background_apple" x="4" y="4" width="37" height="37" />
+  <use xlink:href="#circle" x="4" y="4" width="37" height="37" />
+</svg>

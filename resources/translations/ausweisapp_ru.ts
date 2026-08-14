@@ -321,6 +321,11 @@ MOBILE</extracomment>
         <translation>OK</translation>
     </message>
     <message>
+        <source>Close</source>
+        <extracomment>ALL_PLATFORMS</extracomment>
+        <translation type="unfinished">Закрыть</translation>
+    </message>
+    <message>
         <source>Cancel</source>
         <extracomment>ALL_PLATFORMS</extracomment>
         <translation>Отмена</translation>
@@ -2780,6 +2785,13 @@ ALL_PLATFORMS Description text explaining the PINs 3/7</extracomment>
         <source>Hint</source>
         <extracomment>ALL_PLATFORMS</extracomment>
         <translation type="unfinished">Совет</translation>
+    </message>
+</context>
+<context>
+    <name>NativeTextInput</name>
+    <message>
+        <source>Maximum allowed length reached.</source>
+        <translation>Достигнута максимально допустимая длина.</translation>
     </message>
 </context>
 <context>

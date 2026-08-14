@@ -136,7 +136,7 @@ class test_ReaderConfiguration
 			QTest::newRow("Identiv-Cloud-4700-F") << UsbId(0x04E6, 0x5720) << "Identive CLOUD 4700 F Contactless Reader 1" << "Identiv Cloud 4700 F" << "img_Identive_Cloud_4700_F" << "(Identive CLOUD 4700 F Contactless Reader( 0| 1)|Identiv uTrust 4700 F Dual Interface Reader\\(2\\))";
 			QTest::newRow("Identiv 4701 F") << UsbId(0x04E6, 0x5724) << "Identiv CLOUD 4701 F Contactless Reader 0" << "Identiv 4701 F" << "img_Identive_4701_F" << "^Identiv (uTrust|cloud|CLOUD) 4701 F (Contactless|CL|Dual Interface) Reader( 0| 1|\\(1\\)|\\(2\\))?$";
 
-			QTest::newRow("Cherry-sercure Board") << UsbId(0x046A, 0x01A2) << "Cherry GmbH CHERRY SECURE BOARD 1.0" << "Cherry Secure Board 1.0" << "img_Cherry_secure_board" << "Cherry GmbH CHERRY SECURE BOARD 1.0( 0)?$";
+			QTest::newRow("Cherry-secure Board") << UsbId(0x046A, 0x01A2) << "Cherry GmbH CHERRY SECURE BOARD 1.0" << "Cherry Secure Board 1.0" << "img_Cherry_secure_board" << "Cherry GmbH CHERRY SECURE BOARD 1.0( 0)?$";
 
 			QTest::newRow("Signotec Omega Pad") << UsbId(0x2133, 0x010B) << "NXP PR533" << "Signotec Omega Pad" << "img_Signotec_Omega_Pad" << "NXP PR533( 0)?";
 
@@ -315,8 +315,7 @@ class test_ReaderConfiguration
 			QTest::newRow("Identiv-4701-F-macosx-14-26-2") << UsbId(0x04E6, 0x5724) << "Identiv uTrust 4701 F Dual Interface Reader(2)" << "Identiv 4701 F";
 			QTest::newRow("Identiv-4701-F-macosx-14-26-3") << UsbId(0x04E6, 0x5724) << "Identiv uTrust 4701 F Dual Interface Reader" << "Identiv 4701 F";
 
-			QTest::newRow("Cherry-sercure Board-windows-7-10-1") << UsbId(0x046A, 0x01A2) << "Cherry GmbH CHERRY SECURE BOARD 1.0 0" << "Cherry Secure Board 1.0";
-			QTest::newRow("Cherry-sercure Board-macosx-10.13-11.0-1") << UsbId(0x046A, 0x01A2) << "Cherry GmbH CHERRY SECURE BOARD 1.0" << "Cherry Secure Board 1.0";
+			QTest::newRow("Cherry-secure Board-windows-10-11-1") << UsbId(0x046A, 0x01A2) << "Cherry GmbH CHERRY SECURE BOARD 1.0 0" << "Cherry Secure Board 1.0";
 
 			QTest::newRow("Signotec Omega Pad-windows-10-11") << UsbId(0x2133, 0x010B) << "NXP PR533 0" << "Signotec Omega Pad";
 
