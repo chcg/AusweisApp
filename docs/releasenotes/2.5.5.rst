@@ -1,0 +1,22 @@
+AusweisApp 2.5.5
+^^^^^^^^^^^^^^^^
+
+**Releasedatum:** 14. August 2026
+
+
+Anwender
+""""""""
+- Visuelle Anpassungen und Optimierungen der grafischen Oberfläche.
+
+- Optimierung einzelner Barrierefreiheitsfunktionen.
+
+- Anpassung des App-Icons auf macOS und iOS.
+
+- Verhinderung eines möglichen Speicherlecks von OpenSSL.
+
+- Verhinderung der möglichen Einschleusung von unerwünschtem Code
+  in eine von der Anwendung generierte Fehlerseite im Webbrowser.
+
+
+Entwickler
+""""""""""

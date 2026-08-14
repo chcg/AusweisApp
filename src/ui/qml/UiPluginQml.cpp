@@ -99,9 +99,12 @@ UiPluginQml::UiPluginQml()
 
 	Env::getSingleton<VolatileSettings>()->setUsedAsSDK(false);
 
+#ifndef Q_OS_IOS
 	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/AusweisApp_Roboto_Regular.ttf"));
 	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/AusweisApp_Roboto_Medium.ttf"));
 	QFontDatabase::addApplicationFont(QStringLiteral(":/fonts/AusweisApp_Roboto_Bold.ttf"));
+#endif
+
 	onUseSystemFontChanged();
 
 #ifndef Q_OS_ANDROID

@@ -98,6 +98,8 @@ Popup {
 			GLink {
 				id: closeButton
 
+				//: ALL_PLATFORMS
+				Accessible.name: qsTr("Close")
 				colorStyle: Style.color.linkTitle
 				horizontalPadding: 0
 				icon.source: "qrc:///images/material_close.svg"

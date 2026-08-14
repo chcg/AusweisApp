@@ -217,14 +217,7 @@ QByteArrayList TlsConfiguration::readSignatureAlgorithms(const QJsonObject& pCon
 	QByteArrayList algorithms;
 	for (const QJsonValueConstRef line : array)
 	{
-		const auto& value = line.toString();
-		if (value.count(QStringLiteral("+")) != 1)
-		{
-			qCritical() << pKey << "has malformed item" << line;
-			return QByteArrayList();
-		}
-
-		algorithms += value.toUtf8();
+		algorithms += line.toString().toUtf8();
 	}
 
 	return algorithms;

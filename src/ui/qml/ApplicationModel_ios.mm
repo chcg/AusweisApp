@@ -202,7 +202,10 @@ void ApplicationModel::showAppStoreRatingDialog() const
 	}
 
 	qCDebug(feedback) << "Requesting iOS AppStore review";
+	QT_WARNING_PUSH
+			QT_WARNING_DISABLE_DEPRECATED
 	[SKStoreReviewController requestReviewInScene: windowScene];
+	QT_WARNING_POP
 }
 
 

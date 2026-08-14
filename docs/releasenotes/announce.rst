@@ -1,6 +1,15 @@
 Abkündigungen
 =============
 
+Mit der Version 2.7.0 der AusweisApp werden die Unterstützung
+folgender Systeme und Funktionen eingestellt.
+
+- Windows Server 2016
+- Android 9
+- Android 10
+- iOS 17
+
+
 Mit der Version 2.6.0 der AusweisApp werden die Unterstützung
 folgender Systeme und Funktionen eingestellt.
 

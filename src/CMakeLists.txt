@@ -44,7 +44,7 @@ if(IOS)
 			set(IOS_APPICON_PATH "beta/")
 		endif()
 
-		list(APPEND IOS_RESOURCES ${RESOURCES_DIR}/images/ios/appIcons/${IOS_APPICON_PATH}Images.xcassets)
+		list(APPEND IOS_RESOURCES ${RESOURCES_DIR}/images/ios/${IOS_APPICON_PATH}Images.xcassets)
 		list(APPEND IOS_RESOURCES ${RESOURCES_DIR}/packaging/ios/Settings.bundle)
 		list(APPEND IOS_RESOURCES ${RCC})
 		file(GLOB_RECURSE font_files CONFIGURE_DEPENDS "${RESOURCES_DIR}/fonts/*.ttf")

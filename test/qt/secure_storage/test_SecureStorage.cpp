@@ -70,7 +70,7 @@ class test_SecureStorage
 		void testGetCVRootCertificatesUnique()
 		{
 			const auto secureStorage = Env::getSingleton<SecureStorage>();
-			static const int EXPECTED_CERTIFICATE_COUNT = 20;
+			static const int EXPECTED_CERTIFICATE_COUNT = 21;
 
 			QList<QSharedPointer<const CVCertificate>> cvcs = CVCertificate::fromRaw(secureStorage->getCVRootCertificates(true))
 					+ CVCertificate::fromRaw(secureStorage->getCVRootCertificates(false));
@@ -110,7 +110,7 @@ class test_SecureStorage
 			QTest::addColumn<bool>("isProductive");
 			QTest::addColumn<QString>("commentName");
 
-			QTest::newRow("production") << 6 << true << "_comment_2";
+			QTest::newRow("production") << 7 << true << "_comment_2";
 			QTest::newRow("test") << 14 << false << "_comment_4";
 		}
 
@@ -319,10 +319,10 @@ class test_SecureStorage
 			const auto secureStorage = Env::getSingleton<SecureStorage>();
 
 			const auto& config = secureStorage->getTlsConfigRemoteIfd();
-			QCOMPARE(config.getSignatureAlgorithms().size(), 3);
+			QCOMPARE(config.getSignatureAlgorithms().size(), 9);
 
 			const auto& configPairing = secureStorage->getTlsConfigRemoteIfd(SecureStorage::TlsSuite::PSK);
-			QCOMPARE(configPairing.getSignatureAlgorithms().size(), 3);
+			QCOMPARE(configPairing.getSignatureAlgorithms().size(), 9);
 
 			const auto& configLocalIfd = secureStorage->getTlsConfigLocalIfd();
 			QCOMPARE(configLocalIfd.getSignatureAlgorithms().size(), 3);

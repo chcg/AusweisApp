@@ -59,6 +59,8 @@ class NativeTextInput
 
 		[[nodiscard]] QWindow* nativeWindow() const;
 
+		void sinkFocus() const;
+
 	Q_SIGNALS:
 		void accepted();
 		void fontChanged();

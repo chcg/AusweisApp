@@ -13,7 +13,8 @@ BasePlatformTextField {
 	ToolTip.text: d.maxReachedText
 	ToolTip.visible: !ApplicationModel.screenReaderRunning && d.maxReached(root.text)
 
-	onActiveFocusChanged: root.activeFocus && d.announceMaxReached()
+	// iOS prioritizes manual announcements and kills previous ones like the content announcement
+	onActiveFocusChanged: Qt.platform.os !== "ios" && root.activeFocus && d.announceMaxReached()
 	onTextChanged: d.announceMaxReached()
 
 	QtObject {

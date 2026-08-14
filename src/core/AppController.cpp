@@ -420,17 +420,6 @@ void AppController::onRestartApplicationRequested()
 }
 
 
-void AppController::onShowUiRequested(UiModule pModule)
-{
-	if (mActiveWorkflow.isNull())
-	{
-		Q_EMIT fireShowUi(pModule);
-		return;
-	}
-	qWarning() << "Workflow in progress, cannot show requested UI:" << pModule;
-}
-
-
 void AppController::onUiPlugin(const UiPlugin* pPlugin) const
 {
 	qCDebug(init) << "Register UI:" << pPlugin->metaObject()->className();
@@ -451,7 +440,7 @@ void AppController::onUiPlugin(const UiPlugin* pPlugin) const
 	connect(this, &AppController::fireProxyAuthenticationRequired, pPlugin, &UiPlugin::onProxyAuthenticationRequired);
 
 	connect(pPlugin, &UiPlugin::fireWorkflowRequested, this, &AppController::onWorkflowRequested, Qt::QueuedConnection);
-	connect(pPlugin, &UiPlugin::fireShowUiRequested, this, &AppController::onShowUiRequested, Qt::QueuedConnection);
+	connect(pPlugin, &UiPlugin::fireShowUiRequested, this, &AppController::fireShowUi, Qt::QueuedConnection);
 	connect(pPlugin, &UiPlugin::fireShowUserInformationRequested, this, &AppController::fireShowUserInformation);
 	connect(pPlugin, &UiPlugin::fireRestartApplicationRequested, this, &AppController::onRestartApplicationRequested, Qt::QueuedConnection);
 	connect(pPlugin, &UiPlugin::fireQuitApplicationRequest, this, &AppController::doShutdown);

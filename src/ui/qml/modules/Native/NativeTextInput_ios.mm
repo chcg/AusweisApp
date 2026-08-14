@@ -2,10 +2,42 @@
  * Copyright (c) 2026 Governikus GmbH & Co. KG, Germany
  */
 
-#import <CoreGraphics/CoreGraphics.h>
-#include <UIKit/UIKit.h>
-
 #include "NativeTextInput.h"
+
+#import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKit.h>
+
+
+@interface GAccessibleTextField
+	: UITextField
+@property NativeTextInput* qtBridgeItem;
+@end
+
+@implementation GAccessibleTextField
+
+@synthesize qtBridgeItem;
+
+
+- (id) initWithBridge: (NativeTextInput*) pQtBridgeItem
+{
+	self = [super initWithFrame:CGRectMake(0, 0, 1, 1)];
+	if (self)
+	{
+		qtBridgeItem = pQtBridgeItem;
+	}
+	return self;
+}
+
+
+- (void)accessibilityElementDidBecomeFocused {
+	[super accessibilityElementDidBecomeFocused];
+	qtBridgeItem->sinkFocus();
+	UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
+}
+
+
+@end
+
 
 @interface TextInputDelegate
 	: NSObject<UITextFieldDelegate>
@@ -60,8 +92,10 @@
 
 	int newLength = static_cast<int>(textField.text.length + string.length - range.length);
 	int maximumLength = m_inputWrapper->maximumLength();
+
 	if (maximumLength != -1 && newLength > maximumLength)
 	{
+		UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, NativeTextInput::tr("Maximum allowed length reached.").toNSString());
 		return NO;
 	}
 
@@ -121,8 +155,9 @@ class NativeTextInputPrivate
 	private:
 		NativeTextInput* const q;
 		TextInputDelegate* delegate;
-		UITextField* textInput;
+		GAccessibleTextField* textInput;
 		QScopedPointer<QWindow> window;
+		QScopedPointer<QQuickItem> focusSink;
 		QList<QMetaObject::Connection> parentConnections;
 		int maximumLength;
 		QFont font;
@@ -139,19 +174,21 @@ class NativeTextInputPrivate
 			, delegate(nullptr)
 			, textInput(nullptr)
 			, window(nullptr)
+			, focusSink(new QQuickItem())
 			, parentConnections(QList<QMetaObject::Connection>())
 			, maximumLength(-1)
 			, font(QGuiApplication::font())
 		{
 			delegate = [[TextInputDelegate alloc] initWithTextInput: pNativeTextInput];
 
-			textInput = [[UITextField alloc] initWithFrame: CGRectMake(0, 0, 1, 1)];
+			textInput = [[GAccessibleTextField alloc] initWithBridge: q];
 			[textInput setReturnKeyType:UIReturnKeyDone];
 			[textInput setBorderStyle:UITextBorderStyleRoundedRect];
 			[textInput addTarget: delegate action: @selector(onTextChange) forControlEvents: UIControlEventEditingChanged];
 			[textInput setDelegate:delegate];
 
 			setWindow(QWindow::fromWinId(WId(textInput)));
+			focusSink->setParentItem(pNativeTextInput);
 		}
 
 
@@ -167,11 +204,10 @@ class NativeTextInputPrivate
 
 		void clearParentConnections()
 		{
-			for (const auto& connection : std::as_const(parentConnections))
+			for (auto& connection : std::exchange(parentConnections, {}))
 			{
 				QObject::disconnect(connection);
 			}
-			parentConnections.clear();
 		}
 
 
@@ -202,7 +238,6 @@ NativeTextInput::NativeTextInput(QQuickItem* pParent)
 	, d(new NativeTextInputPrivate(this))
 {
 	setFlag(ItemHasContents, true);
-
 	onParentChanged();
 	d->updateImplicitSize();
 }
@@ -401,4 +436,15 @@ void NativeTextInput::updateEffectiveOpacity()
 
 	d->textInput.alpha = opacity;
 	[d->textInput setNeedsDisplay];
+}
+
+
+void NativeTextInput::sinkFocus() const
+{
+	/* We use the focusSink to remove the focus from the previous item to keep the focus state
+	 * consistent within the view in which NativeTextInput is placed. Otherwise the focus would
+	 * remain on the previous item and cause issues with the (a11y) navigation. We cannot set the
+	 * focus on NativeTextInput itself, because this activates the cursor which is not desired.
+	 **/
+	d->focusSink->forceActiveFocus();
 }

@@ -5,7 +5,7 @@
 publiccodeYmlVersion: '0.2'
 name: AusweisApp
 url: 'https://github.com/Governikus/AusweisApp'
-releaseDate: '2026-07-15'
+releaseDate: '2026-08-14'
 developmentStatus: stable
 platforms:
   - windows

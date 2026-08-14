@@ -1307,13 +1307,10 @@
 							"os": "win"
 						},
 						{
-							"os": "mac"
-						},
-						{
 							"os": "unknown"
 						}
 					],
-					"URL": "https://cherry.de/download/de/download.php?product_id=387"
+					"URL": "https://www.cherry.de/de-de/produkt/secure-board-1-0/downloads"
 				}
 			],
 			"Information": [
@@ -1323,15 +1320,21 @@
 							"DE": "Windows",
 							"EN": "Windows",
 							"os": "win"
-						},
+						}
+					],
+					"DE": "Der Kartenleser funktioniert mit dem systemseitig installierten Treiber. Es ist kein Treiber vom Hersteller vorhanden.",
+					"EN": "The card reader operates with the driver automatically installed by the system. There is no driver from the manufacturer."
+				},
+				{
+					"Platforms": [
 						{
 							"DE": "macOS",
 							"EN": "macOS",
 							"os": "mac"
 						}
 					],
-					"DE": "Der Kartenleser funktioniert mit dem systemseitig installierten Treiber. Es ist kein Treiber vom Hersteller vorhanden.",
-					"EN": "The card reader operates with the driver automatically installed by the system. There is no driver from the manufacturer."
+					"DE": "Der Kartenleser wird nicht mehr unterstützt, leider bietet der Hersteller keine aktuellen Treiber an.",
+					"EN": "The card reader is no longer supported, unfortunately the manufacturer does not offer up-to-date drivers."
 				}
 			]
 		},

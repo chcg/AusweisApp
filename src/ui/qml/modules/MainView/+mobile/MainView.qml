@@ -64,7 +64,7 @@ FlickableSectionPage {
 		Layout.minimumHeight: minItemHeight
 		Layout.minimumWidth: Math.ceil(minItemWidth / overlapFactor)
 		boundsBehavior: Flickable.DragAndOvershootBounds
-		cacheBuffer: Number.POSITIVE_INFINITY
+		cacheBuffer: 1000
 		highlightMoveDuration: 250
 		highlightRangeMode: allItemsVisible ? ListView.NoHighlightRange : ListView.StrictlyEnforceRange
 		interactive: !allItemsVisible || UiPluginModel.isChromeOS

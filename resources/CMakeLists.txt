@@ -38,10 +38,13 @@ endif()
 
 if((IOS OR ANDROID) AND NOT INTEGRATED_SDK OR FORCE_QRC)
 	list(APPEND QRC_FILES "ausweisapp_mobile.qrc")
+	if (ANDROID)
+		list(APPEND QRC_FILES "ausweisapp_fonts.qrc")
+	endif()
 endif()
 
 if((DESKTOP AND NOT INTEGRATED_SDK) OR FORCE_QRC)
-	list(APPEND QRC_FILES "ausweisapp_desktop.qrc")
+	list(APPEND QRC_FILES "ausweisapp_desktop.qrc" "ausweisapp_fonts.qrc")
 endif()
 
 if(CONTAINER_SDK OR (DESKTOP AND NOT INTEGRATED_SDK) OR FORCE_QRC)
